@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101b20"><title>ASMR Rain Studio</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<style>
+:root{color-scheme:dark;--bg:#0b1418;--panel:#142329;--panel2:#1b3038;--muted:#9bb0b5;--accent:#83d7c5;--line:#2b4249}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#0c171b,#101e24 55%,#14272b);font:15px system-ui;color:#edf7f5}
+header{padding:22px 18px 16px;max-width:900px;margin:auto}h1{font-size:25px;margin:0;letter-spacing:.04em}header p{color:var(--muted);margin:6px 0}
+main{max-width:900px;margin:auto;padding:0 14px 40px}.hero{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#15272d;margin-bottom:16px}
+.hero img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#17282d}.hero .hint{padding:12px 15px;color:#c4d8d8;font-size:13px}
+.card{background:rgba(20,35,41,.96);border:1px solid var(--line);border-radius:18px;padding:16px;margin:13px 0}
+h2{font-size:17px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}
+label{display:block;color:#c4d8d8;font-size:13px;margin:10px 0 6px}
+input,textarea,select{width:100%;background:#0e1a1f;color:#f2fbf9;border:1px solid #38525a;border-radius:11px;padding:12px;font:inherit}
+textarea{min-height:96px;resize:vertical}
+button{border:0;border-radius:12px;padding:13px 16px;background:var(--accent);color:#09201d;font-weight:750;font-size:14px;cursor:pointer}
+button.secondary{background:#28434b;color:#e6f6f3}button:disabled{opacity:.45}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}
+.status{font-size:13px;color:var(--muted);min-height:20px;margin-top:10px}.status.error{color:#ffaaa5}.status.ok{color:#92e7c7}
+.preview{width:100%;border-radius:12px;margin-top:12px;display:none;background:#091114}.preview.show{display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pill{border:1px solid var(--line);padding:10px;border-radius:12px;color:#c9dcda;font-size:13px}
+.small{font-size:12px;color:var(--muted);line-height:1.5}.footer{text-align:center;color:#82999d;font-size:12px;padding:16px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}h1{font-size:22px}.card{padding:14px}}
+</style></head>
+<body>
+<header><h1>🌧️ ASMR RAIN STUDIO</h1><p>Studio konten hujan realistis • 16:9 • Android friendly</p></header>
+<main>
+<section class="hero"><img id="heroImage" src="https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=1400&q=85" alt="Jendela dengan tetesan hujan"><div class="hint">Buat suasana hujan yang tenang, sinematik, dan nyaman didengar.</div></section>
+<section class="card">
+<h2>1. Pengaturan adegan</h2>
+<label for="scene">Pilih suasana</label><select id="scene">
+<option value="A cozy wooden cabin bedroom at night, large glass window covered with flowing raindrops, warm amber bedside lamp, dark pine forest outside">Kamar kabin — jendela hujan</option>
+<option value="View from inside a parked camper van during heavy rain, large panoramic windows, misty forest outside, warm cozy interior">Van di tengah hutan</option>
+<option value="A quiet modern house porch during steady tropical rain, lush green garden, water dripping from roof">Teras rumah tropis</option>
+<option value="A peaceful forest landscape during gentle rainfall, wet leaves, soft mist, natural overcast light">Hutan berkabut</option>
+<option value="Rain falling on a quiet city street at night, reflections on pavement, viewed through a cafe window">Kota malam</option>
+<option value="A small cabin beside a lake during gentle rain, raindrops on the lake surface, misty mountains">Kabin tepi danau</option>
+</select>
+<label for="detail">Detail tambahan (opsional)</label><textarea id="detail" placeholder="Contoh: kamera diam, tetesan air terlihat jelas di kaca, lampu hangat, tanpa manusia..."></textarea>
+<div class="grid"><div class="pill">Durasi akhir: <b>10 menit</b></div><div class="pill">Rasio: <b>16:9 landscape</b></div></div>
+<div class="actions"><button id="imageBtn">Generate gambar</button><button class="secondary" id="videoBtn">Generate video 15 dtk</button></div>
+<div id="genStatus" class="status"></div>
+<img id="imagePreview" class="preview" alt="Gambar hasil generate"><video id="videoPreview" class="preview" controls playsinline></video>
+<div class="actions"><a id="imageDownload" hidden download="asmr-rain.png"><button class="secondary">Unduh gambar</button></a><a id="videoDownload" hidden download="asmr-rain-clip.mp4"><button class="secondary">Unduh klip video</button></a></div>
+</section>
+<section class="card">
+<h2>2. Buat suara hujan ASMR</h2>
+<p class="muted">Suara hujan sintetis dibuat di perangkat. Tidak memakai API tambahan dan dapat dipakai sebagai audio latar berulang.</p>
+<label for="rainType">Karakter hujan</label><select id="rainType"><option value="soft">Rintik lembut</option><option value="steady" selected>Hujan stabil</option><option value="heavy">Hujan deras</option></select>
+<div class="actions"><button id="audioBtn">Buat audio 60 detik</button><button class="secondary" id="playRain">Pratinjau suara</button></div>
+<div id="audioStatus" class="status"></div><audio id="audioPreview" class="preview" controls></audio>
+<a id="audioDownload" hidden download="rain-ambience-60s.wav"><button class="secondary">Unduh WAV</button></a>
+</section>
+<section class="card">
+<h2>3. Rakit video ASMR 10 menit</h2>
+<p class="muted">Aplikasi mengulang klip 15 detik dan audio hujan 60 detik hingga 10 menit. Perlu file video, audio, dan FFmpeg pada server.</p>
+<div class="actions"><button id="assembleBtn" disabled>Rakit MP4 10 menit</button></div>
+<div id="assembleStatus" class="status"></div>
+<a id="finalDownload" hidden><button>Unduh MP4 10 menit</button></a>
+</section>
+<section class="card">
+<h2>Catatan penggunaan</h2>
+<p class="small">API Key disimpan di server melalui file .env, bukan di browser. Pembuatan gambar/video dapat memakai kuota dan biaya Gemini sesuai akun. Video AI yang dibuat adalah klip pendek; hasil 10 menit dibuat dengan mengulang klip tersebut, jadi bukan 10 menit gerakan AI yang berbeda.</p>
+</section>
+<div class="footer">ASMR Rain Studio • Prototype v1.0</div>
+</main>
+<script>
+let imageData="",videoBlob=null,audioBlob=null,audioUrl="",ctx=null;
+const $=id=>document.getElementById(id);
+function promptText(){return $("scene").value+". "+$("detail").value+". Photorealistic, natural physics, cinematic but realistic, locked-off camera, no cuts, no people, no text, no logos, seamless calm ambience."}
+function status(id,msg,kind=""){const el=$(id);el.textContent=msg;el.className="status "+kind}
+async function api(path,body){const r=await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw new Error(d.error||"Permintaan gagal");return d}
+$("imageBtn").onclick=async()=>{status("genStatus","Sedang membuat gambar...");$("imageBtn").disabled=true;try{const d=await api("/api/image",{prompt:promptText()});imageData=d.image;$("imagePreview").src=imageData;$("imagePreview").classList.add("show");$("heroImage").src=imageData;$("imageDownload").href=imageData;$("imageDownload").hidden=false;status("genStatus","Gambar berhasil dibuat.","ok")}catch(e){status("genStatus",e.message,"error")}finally{$("imageBtn").disabled=false}};
+$("videoBtn").onclick=async()=>{status("genStatus","Gemini sedang membuat klip video. Proses dapat memerlukan beberapa menit...");$("videoBtn").disabled=true;try{const d=await api("/api/video",{prompt:promptText()});const res=await fetch(d.video);videoBlob=await res.blob();const u=URL.createObjectURL(videoBlob);$("videoPreview").src=u;$("videoPreview").classList.add("show");$("videoDownload").href=u;$("videoDownload").hidden=false;$("assembleBtn").disabled=!audioBlob;status("genStatus","Klip video berhasil dibuat (15 detik).","ok")}catch(e){status("genStatus",e.message,"error")}finally{$("videoBtn").disabled=false}};
+function makeRainWav(seconds=60){const rate=22050,n=rate*seconds,buf=new ArrayBuffer(44+n*2),view=new DataView(buf);const write=(o,s)=>{for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i))};write(0,"RIFF");view.setUint32(4,36+n*2,true);write(8,"WAVE");write(12,"fmt ");view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,"data");view.setUint32(40,n*2,true);
+const type=$("rainType").value, gain=type==="soft"?.20:type==="heavy"?.52:.34;let low=0,mid=0;
+for(let i=0;i<n;i++){const noise=Math.random()*2-1;low=low*.992+noise*.008;mid=mid*.88+noise*.12;let v=(noise*.62+mid*.28+low*.55)*gain;const swell=.78+.22*Math.sin(2*Math.PI*i/(rate*17));v*=swell;v=Math.max(-.95,Math.min(.95,v));view.setInt16(44+i*2,Math.round(v*32767),true)}
+return new Blob([buf],{type:"audio/wav"})}
+$("audioBtn").onclick=()=>{audioBlob=makeRainWav();if(audioUrl)URL.revokeObjectURL(audioUrl);audioUrl=URL.createObjectURL(audioBlob);$("audioPreview").src=audioUrl;$("audioPreview").classList.add("show");$("audioDownload").href=audioUrl;$("audioDownload").hidden=false;$("assembleBtn").disabled=!videoBlob;status("audioStatus","Audio hujan WAV 60 detik berhasil dibuat.","ok")};
+$("playRain").onclick=()=>{if(!audioBlob){$("audioBtn").click();setTimeout(()=>$("audioPreview").play(),100)}else $("audioPreview").play()};
+$("assembleBtn").onclick=async()=>{if(!videoBlob||!audioBlob)return;status("assembleStatus","Mengunggah aset dan merakit MP4 10 menit...");$("assembleBtn").disabled=true;try{const fd=new FormData();fd.append("video",videoBlob,"clip.mp4");fd.append("audio",audioBlob,"rain.wav");const r=await fetch("/api/assemble",{method:"POST",body:fd});if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error||"Perakitan gagal")}const b=await r.blob(),u=URL.createObjectURL(b);$("finalDownload").href=u;$("finalDownload").download="asmr-rain-10-minutes.mp4";$("finalDownload").hidden=false;status("assembleStatus","Selesai! MP4 10 menit siap diunduh.","ok")}catch(e){status("assembleStatus",e.message,"error")}finally{$("assembleBtn").disabled=false}};
+</script></body></html>
